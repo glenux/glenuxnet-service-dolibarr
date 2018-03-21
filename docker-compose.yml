@@ -1,0 +1,34 @@
+version: "3"
+services:
+
+  db:
+    image: mariadb:10.3
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    networks:
+      - backend
+
+  dolibarr:
+    build: ./image
+    ports:
+      - "80:80"
+    depends_on:
+      - "db"
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  db-data:
