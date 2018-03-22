@@ -18,6 +18,9 @@ services:
       - "db"
     networks:
       - backend
+    volumes:
+      - dolibar-config:/var/www/html/conf
+      - dolibar-documents:/var/www/html/documents
 
   adminer:
     image: adminer
@@ -32,3 +35,6 @@ networks:
 
 volumes:
   db-data:
+  dolibar-config:
+  dolibar-documents:
+
