@@ -34,6 +34,6 @@ RUN sed \
   -i 's|/var/www/html|/var/www/html/htdocs|' \
   /etc/apache2/sites-enabled/000-default.conf
 
-RUN cd /var/www/html \
-	composer install
+WORKDIR /var/www/html 
 
+CMD composer install && apache2-foreground
