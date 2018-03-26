@@ -29,6 +29,7 @@ RUN unzip -d /usr/src /tmp/dolibarr-7.0.0.zip \
 
 ADD php-uploads.ini /usr/local/etc/php/conf.d/glenux-uploads.ini
 ADD php-performance.ini /usr/local/etc/php/conf.d/glenux-performance.ini
+ADD php-errors.ini /usr/local/etc/php/conf.d/glenux-errors.ini
 
 RUN sed \
   -i 's|/var/www/html|/var/www/html/htdocs|' \
