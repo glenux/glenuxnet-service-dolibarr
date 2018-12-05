@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -x
+
+DATE="$(date --iso-8601)"
+DISPLAY=:0
+
+BACKUP_DIR="$HOME/Documents/Backup"
+
+echo "Exporting database dump"
+/usr/bin/setsid ssh apps.glenux.net \
+	dokku mariadb:export erp \
+	> "$BACKUP_DIR/net.glenux.apps.erp.$DATE.sql"
+
+echo "Exporting files"
+/usr/bin/setsid ssh apps.glenux.net \
+	docker exec erp.web.1 \
+	"bash -c 'cd /var/www/html/documents ; tar czf - .'" \
+	> "$BACKUP_DIR/net.glenux.apps.erp.$DATE.tar.gz"
+
