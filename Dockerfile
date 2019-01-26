@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.1-apache
 MAINTAINER Glenn ROLLAND <glenux@glenux.net>
 
 RUN apt-get update \
@@ -21,13 +21,13 @@ RUN curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN wget \
-  -O /tmp/dolibarr-8.0.3.zip \
-  https://github.com/Dolibarr/dolibarr/archive/8.0.3.zip
+  -O /tmp/dolibarr-8.0.4.zip \
+  https://github.com/Dolibarr/dolibarr/archive/8.0.4.zip
 
-RUN unzip -d /usr/src /tmp/dolibarr-8.0.3.zip \
-	&& chown -R www-data:www-data /usr/src/dolibarr-8.0.3 \
+RUN unzip -d /usr/src /tmp/dolibarr-8.0.4.zip \
+	&& chown -R www-data:www-data /usr/src/dolibarr-8.0.4 \
 	&& rm -fr /var/www/html \
-	&& cp -a /usr/src/dolibarr-8.0.3 /var/www/html
+	&& cp -a /usr/src/dolibarr-8.0.4 /var/www/html
 
 ADD php-uploads.ini /usr/local/etc/php/conf.d/glenux-uploads.ini
 ADD php-performance.ini /usr/local/etc/php/conf.d/glenux-performance.ini
