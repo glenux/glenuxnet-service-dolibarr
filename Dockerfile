@@ -1,5 +1,7 @@
-FROM php:7.1-apache
+FROM php:7.2-apache-buster
 MAINTAINER Glenn ROLLAND <glenux@glenux.net>
+
+ENV DOLIBARR_VERSION=10.0.2
 
 RUN apt-get update \
 	&& apt-cache search lib mysql dev$ \
@@ -8,10 +10,13 @@ RUN apt-get update \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-        libmysql++-dev \
+        libmariadb-dev \
         zlib1g-dev \
-	&& apt-get autoremove \
+        libicu-dev \
+	&& apt-get autoremove -y \
     && docker-php-ext-install -j$(nproc) iconv \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo pdo_mysql mysqli \
@@ -21,13 +26,13 @@ RUN curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN wget \
-  -O /tmp/dolibarr-8.0.4.zip \
-  https://github.com/Dolibarr/dolibarr/archive/8.0.4.zip
+  -O /tmp/dolibarr-${DOLIBARR_VERSION}.zip \
+  https://github.com/Dolibarr/dolibarr/archive/${DOLIBARR_VERSION}.zip
 
-RUN unzip -d /usr/src /tmp/dolibarr-8.0.4.zip \
-	&& chown -R www-data:www-data /usr/src/dolibarr-8.0.4 \
+RUN unzip -d /usr/src /tmp/dolibarr-${DOLIBARR_VERSION}.zip \
+	&& chown -R www-data:www-data /usr/src/dolibarr-${DOLIBARR_VERSION} \
 	&& rm -fr /var/www/html \
-	&& cp -a /usr/src/dolibarr-8.0.4 /var/www/html
+	&& cp -a /usr/src/dolibarr-${DOLIBARR_VERSION} /var/www/html
 
 ADD php-uploads.ini /usr/local/etc/php/conf.d/glenux-uploads.ini
 ADD php-performance.ini /usr/local/etc/php/conf.d/glenux-performance.ini
@@ -40,3 +45,4 @@ RUN sed \
 WORKDIR /var/www/html 
 
 CMD composer install && apache2-foreground
+
