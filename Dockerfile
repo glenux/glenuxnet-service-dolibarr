@@ -1,7 +1,7 @@
 FROM php:7.2-apache-buster
 MAINTAINER Glenn ROLLAND <glenux@glenux.net>
 
-ENV DOLIBARR_VERSION=11.0.4
+ENV DOLIBARR_VERSION=12.0.1
 
 RUN apt-get update \
 	&& apt-cache search lib mysql dev$ \
