@@ -19,7 +19,7 @@ services:
     networks:
       - backend
     volumes:
-      - dolibar-config:/var/www/html/conf
+      - dolibar-config:/var/www/html/htdocs/conf
       - dolibar-documents:/var/www/html/documents
 
   adminer:
