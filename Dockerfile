@@ -1,9 +1,9 @@
-FROM php:7.2-apache-buster
+FROM php:7.4-apache-buster
 # FROM php:7.3-apache-buster
 MAINTAINER Glenn ROLLAND <glenux@glenux.net>
 
 # ENV DOLIBARR_VERSION=12.0.1
-ENV DOLIBARR_VERSION=13.0.0
+ENV DOLIBARR_VERSION=13.0.2
 
 RUN apt-get update \
 	&& apt-cache search lib mysql dev$ \
