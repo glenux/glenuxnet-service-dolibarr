@@ -10,11 +10,12 @@ RUN apt-get update \
 	&& apt-get install -y \
 		wget unzip curl \
         libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-        libmariadb-dev \
-        zlib1g-dev \
         libicu-dev \
+        libjpeg62-turbo-dev \
+        libmariadb-dev \
+        libpng-dev \
+        libzip-dev \
+        zlib1g-dev \
 	&& apt-get autoremove -y \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure intl \
