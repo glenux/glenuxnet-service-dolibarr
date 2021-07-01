@@ -51,7 +51,7 @@ build-docker-image:       # This job runs in the build stage, which runs first.
       fi
     - docker build
         --pull
-        --file Docker
+        --file Dockerfile
         --tag "$CI_REGISTRY_IMAGE${tag}"
         --tag "$CI_REGISTRY_IMAGE:$VERSION"
         .
