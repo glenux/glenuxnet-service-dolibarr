@@ -2,8 +2,6 @@ FROM php:7.4-apache-buster
 # FROM php:7.3-apache-buster
 MAINTAINER Glenn ROLLAND <glenux@glenux.net>
 
-# ENV DOLIBARR_VERSION=12.0.1
-ENV DOLIBARR_VERSION=13.0.2
 
 RUN apt-get update \
 	&& apt-cache search lib mysql dev$ \
@@ -26,9 +24,14 @@ RUN apt-get update \
     && docker-php-ext-install calendar \
     && docker-php-ext-install zip
 
+ADD php-uploads.ini /usr/local/etc/php/conf.d/glenux-uploads.ini
+ADD php-performance.ini /usr/local/etc/php/conf.d/glenux-performance.ini
+ADD php-errors.ini /usr/local/etc/php/conf.d/glenux-errors.ini
+
 RUN curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
 
+ENV DOLIBARR_VERSION=14.0.1
 RUN wget \
   -O /tmp/dolibarr-${DOLIBARR_VERSION}.zip \
   https://github.com/Dolibarr/dolibarr/archive/${DOLIBARR_VERSION}.zip
@@ -37,10 +40,6 @@ RUN unzip -d /usr/src /tmp/dolibarr-${DOLIBARR_VERSION}.zip \
 	&& chown -R www-data:www-data /usr/src/dolibarr-${DOLIBARR_VERSION} \
 	&& rm -fr /var/www/html \
 	&& cp -a /usr/src/dolibarr-${DOLIBARR_VERSION} /var/www/html
-
-ADD php-uploads.ini /usr/local/etc/php/conf.d/glenux-uploads.ini
-ADD php-performance.ini /usr/local/etc/php/conf.d/glenux-performance.ini
-ADD php-errors.ini /usr/local/etc/php/conf.d/glenux-errors.ini
 
 RUN sed \
   -i 's|/var/www/html|/var/www/html/htdocs|' \
